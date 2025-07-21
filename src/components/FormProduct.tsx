@@ -104,10 +104,10 @@ const LabelInput= ({
   );
 };
 
-const NotProductYet = () => {
+const NotProductAvilable = () => {
   return (
     <label className="text-red-700 bg-red-200 border-2 rounded-lg border-red-700 text-lg font-semibold  px-2 flex items-center  ">
-      No products yet!
+      No products avilable to sale .
     </label>
   );
 };
@@ -119,12 +119,14 @@ const SelectName = ({
   name,
   setQuantityRest
 }: SelectNameProps) => {
-  const filterType = operationBuy.filter(
+
+  const operationBuyAvilable = operationBuy.filter(oper => oper.quantityRest > 0)
+  const filterType = operationBuyAvilable.filter(
     (operation) => operation.type === type
   );
 
   const operationBuySelected = (name: string) => {
-    const buyFind = operationBuy.find((operation) => operation.name === name);
+    const buyFind = operationBuyAvilable.find((operation) => operation.name === name);
     if (buyFind) {
       setQuantityRest(buyFind.quantityRest)
       console.log(buyFind.quantityRest)
@@ -148,9 +150,9 @@ const SelectName = ({
 
   return (
     <>
-      {operationBuy.length <= 0 ? (
-        <NotProductYet />
-      ) : type === "DEFAULT" ? (
+      {operationBuyAvilable.length === 0 ? (
+        <NotProductAvilable />
+      ) : type === "DEFAULT"  ? (
         <select
           name="name"
           id="name"
@@ -167,7 +169,7 @@ const SelectName = ({
           >
             Select a product
           </option>
-          {operationBuy.map((operation) => (
+          {operationBuyAvilable.map((operation) => (
             <option key={operation.name} value={operation.name}>
               {operation.name}
             </option>
@@ -197,7 +199,7 @@ const SelectName = ({
           ))}
         </select>
       ) : (
-        <NotProductYet />
+        <NotProductAvilable />
       )}
     </>
   );

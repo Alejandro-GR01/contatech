@@ -35,7 +35,7 @@ const ListOperations = () => {
                
                   }
                 
-                <p className="capitalize">{oper.name}</p>
+                <p>{oper.name}</p>
               </div>
 
               <p>

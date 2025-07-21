@@ -22,7 +22,7 @@ export const operationReducer = (
   actions: Actions
 ) => {
   if (actions.type === "add-buyOperation") {
-    const  {
+    const {
       mode,
       type,
       name,
@@ -53,60 +53,83 @@ export const operationReducer = (
     };
   }
   if (actions.type === "add-saleOperation") {
-    const BuyProdCopy = [...state.operationBuy]
-    const findBuyProdIndex = state.operationBuy.findIndex(operation => operation.idProduct === actions.payload.operation.idProduct)
-    const newBuyArray = BuyProdCopy.map((prod, i)=> {
-      if(i === findBuyProdIndex){
-        const newRest = prod.quantityRest - actions.payload.operation.quantity
+    const BuyProdCopy = [...state.operationBuy];
+    const findBuyProdIndex = state.operationBuy.findIndex(
+      (operation) => operation.idProduct === actions.payload.operation.idProduct
+    );
+    const newBuyArray = BuyProdCopy.map((prod, i) => {
+      if (i === findBuyProdIndex) {
+        const newRest = prod.quantityRest - actions.payload.operation.quantity;
         return {
           ...prod,
-          quantityRest : newRest
-        }
-      } else {
-      return prod
-      }
-    })
-
-   
-    
-    
-        return {
-          ...state,
-          operationBuy: newBuyArray,
-          operationSale: [...state.operationSale, actions.payload.operation],
-          operationAll: [...state.operationAll, actions.payload.operation],
-
+          quantityRest: newRest,
         };
+      } else {
+        return prod;
+      }
+    });
 
-
+    return {
+      ...state,
+      operationBuy: newBuyArray,
+      operationSale: [...state.operationSale, actions.payload.operation],
+      operationAll: [...state.operationAll, actions.payload.operation],
+    };
   }
   if (actions.type === "delete-operation") {
     const operationToDelete = state.operationAll.find(
       (operation) => operation.idOperation === actions.payload.id
     );
     if (operationToDelete) {
-      let buyResolt: OperationBuy[] = [...state.operationBuy];
-      let saleResolt: Operation[] = [...state.operationSale];
-      let allResolt: Operation[] = [];
+      let buyRes: OperationBuy[] = [...state.operationBuy];
+      let saleRes: Operation[] = [];
+      let allRes: Operation[] = [];
+      let idProductToDelete: OperationBuy["idProduct"];
+
       if (operationToDelete.mode === "buy") {
-        buyResolt = state.operationBuy.filter(
+        const indexBuyToDelete = state.operationBuy.findIndex(
+          (oper) => oper.idOperation === actions.payload.id
+        );
+        idProductToDelete = state.operationBuy[indexBuyToDelete].idProduct;
+        buyRes = state.operationBuy.filter(
           (operation) => operation.idOperation !== actions.payload.id
+        );
+        saleRes = state.operationSale.filter(
+          (oper) => oper.idProduct !== idProductToDelete
+        );
+        allRes = state.operationAll.filter(
+          (oper) => oper.idProduct !== idProductToDelete
         );
       } else if (operationToDelete.mode === "sale") {
-        saleResolt = state.operationSale.filter(
+        const indexSaleDelete = state.operationSale.findIndex(
+          (oper) => oper.idOperation === actions.payload.id
+        );
+        idProductToDelete = state.operationSale[indexSaleDelete].idProduct;
+        saleRes = state.operationSale.filter(
           (operation) => operation.idOperation !== actions.payload.id
         );
+        allRes = state.operationAll.filter(
+          (operation) => operation.idOperation !== actions.payload.id
+        );
+        buyRes = state.operationBuy.map((oper) => {
+          if (oper.idProduct === idProductToDelete) {
+            return {
+              ...oper,
+              quantityRest:
+                oper.quantityRest +
+                state.operationSale[indexSaleDelete].quantity,
+            };
+          } else {
+            return oper;
+          }
+        });
       }
-
-      allResolt = state.operationAll.filter(
-        (operation) => operation.idOperation !== actions.payload.id
-      );
 
       return {
         ...state,
-        operationBuy: buyResolt,
-        operationSale: saleResolt,
-        operationAll: allResolt,
+        operationBuy: buyRes,
+        operationSale: saleRes,
+        operationAll: allRes,
       };
     }
   }
