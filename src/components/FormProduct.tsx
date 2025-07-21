@@ -14,39 +14,30 @@ import useOperation from "../hooks/useOperation";
 type SelectitemProps = {
   name: string;
   optionList: OptionItem[];
-  handleSelect: React.Dispatch<React.SetStateAction<string>>;
+  handleSelect: (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => void   
   value: string;
   disabled?: boolean;
 };
 
-type LabelInputStringProps = {
-  name: string;
-  labelName: string;
-  value: string
-  handleInput: Dispatch<SetStateAction<string>>;
-};
 
-type LabelInputNumberProps = {
+
+type LabelInputProps = {
   name: string;
   labelName: string;
-  value: number,
-  handleInput: Dispatch<SetStateAction<number>>;
+  value: number | string;
+  type: string
+  handleInput:  (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => void   
   disabled?: boolean;
 };
 
 type SelectNameProps = {
   operationBuy: Operation[];
-  handleData: {
-    setName: Dispatch<SetStateAction<string>>;
-    setBuy: Dispatch<SetStateAction<number>>;
-    setMeasure: Dispatch<SetStateAction<string>>;
-    setSale: Dispatch<SetStateAction<number>>;
-    setType: Dispatch<SetStateAction<string>>;
-    setIdProduct: Dispatch<SetStateAction<string>>
-  };
+  handleData:Dispatch<SetStateAction<OperationForm>>;
   type: string;
   name: string;
 };
+
+type OperationForm = Omit<Operation, "idOperation" | "date">;
 
 const SelectItem = ({
   name,
@@ -60,9 +51,7 @@ const SelectItem = ({
       name={name}
       id={name}
       value={value}
-      onChange={(e) => {
-        handleSelect(e.target.value);
-      }}
+      onChange={handleSelect}
       className={`${
         disabled ? "opacity-80 text-gray-500 " : ""
       }text-lg font-semibold bg-gray-300 rounded-lg px-2 py-0 block `}
@@ -82,54 +71,30 @@ const SelectItem = ({
   );
 };
 
-const LabelInputString = ({
-  name,
-  labelName,
-  value,
-  handleInput,
-}: LabelInputStringProps) => {
-  return (
-    <div className=" grid grid-rows-1 grid-cols-5   justify-between items-center ">
-      <label htmlFor={name} className="px-2 text-lg  font-semibold col-span-2 ">
-        {labelName}
-      </label>
-      <input
-        name={name}
-        id={name}
-        placeholder={labelName}
-        value={value}
-        onChange={(e) => {
-          handleInput(e.target.value);
-        }}
-        className=" placeholder:lowercase  bg-gray-300 rounded-lg px-4 py-2 col-span-3"
-      />
-    </div>
-  );
-};
 
-const LabelInputNumber = ({
+
+const LabelInput= ({
   name,
   labelName,
   value,
+  type,
   handleInput,
   disabled,
-  
-}: LabelInputNumberProps) => {
+}: LabelInputProps) => {
   return (
     <div className="grid grid-rows-1 grid-cols-7 justify-center   items-center ">
       <label htmlFor={name} className="px-2 text-lg  font-semibold col-span-3 ">
-        {labelName} 
+        {labelName}
       </label>
       <input
         disabled={disabled}
-        type="number"
+        type={type}
         name={name}
         id={name}
         placeholder={labelName}
         value={value}
-        onChange={(e) => {
-          handleInput(+e.target.value);
-        }}
+        onChange={handleInput}
+        
         className={`${
           disabled ? "opacity-80 " : ""
         } placeholder:lowercase  bg-gray-300 rounded-lg px-4 py-2 col-span-4 `}
@@ -159,13 +124,25 @@ const SelectName = ({
   const operationBuySelected = (name: string) => {
     const buyFind = operationBuy.find((operation) => operation.name === name);
     if (buyFind) {
-      handleData.setName(buyFind.name);
-      handleData.setBuy(buyFind.buy);
-      handleData.setMeasure(buyFind.measure);
-      handleData.setSale(buyFind.sale);
-      handleData.setType(buyFind.type);
-      handleData.setIdProduct(buyFind.idProduct)
-      
+      /// Para cambiar si es sale y que solo se muestren los valores del sale seleccionado
+      handleData((data) => {
+        return{
+          ...data,
+          name:buyFind.name,
+          buy: buyFind.buy,
+          measure: buyFind.measure,
+          sale: buyFind.sale,
+          type: buyFind.type,
+          idProduct: buyFind.idProduct
+
+        }
+      })
+      // handleData.setName(buyFind.name);
+      // handleData.setBuy(buyFind.buy);
+      // handleData.setMeasure(buyFind.measure);
+      // handleData.setSale(buyFind.sale);
+      // handleData.setType(buyFind.type);
+      // handleData.setIdProduct(buyFind.idProduct);
     }
   };
 
@@ -235,88 +212,72 @@ const FormProduct = () => {
     userName,
   } = useOperation();
 
-  const [mode, setMode] = useState("DEFAULT");
-  const [type, setType] = useState("DEFAULT");
-  const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(0);
-  const [measure, setMeasure] = useState("DEFAULT");
-  const [buy, setBuy] = useState(0);
-  const [sale, setSale] = useState(0);
-  const [idProduct, setIdProduct] = useState('')
+  const initialForm = {
+    mode: "DEFAULT",
+    type: "DEFAULT",
+    name: "",
+    quantity: 0,
+    measure: "DEFAULT",
+    buy: 0,
+    sale: 0,
+    idProduct: "",
+  }
+
+  const [operationForm, setOperationForm] = useState<OperationForm>(initialForm);
+
+
 
   const resetFormProd = () => {
-    setMode("DEFAULT");
-    setType("DEFAULT");
-    setName("");
-    setQuantity(0);
-    setMeasure("DEFAULT");
-    setBuy(0);
-    setSale(0);
-    setIdProduct('')
-    console.log("Reseteado", name);
+    setOperationForm(initialForm)
   };
 
-  
-
   const validationFormProduct = () => {
-    if (mode === "DEFAULT") {
+    if (operationForm.mode === "DEFAULT") {
       showMesage("Please insert a Operation Mode.", "error");
-    } else if (mode === "sale" && operationBuy.length === 0) {
+    } else if (operationForm.mode === "sale" && operationBuy.length === 0) {
       showMesage("Please insert first a buy operation", "error");
-    } else if (type === "DEFAULT") {
+    } else if (operationForm.type === "DEFAULT") {
       showMesage("Please insert a Operation Type.", "error");
-    } else if (name.length === 0) {
+    } else if (operationForm.name.length === 0) {
       showMesage("The name is necessary.", "error");
-    } else if (name.length < 6) {
+    } else if (operationForm.name.length < 6) {
       showMesage("The name must be over 6 letters.", "error");
-    } else if (quantity <= 0) {
+    } else if (operationForm.quantity <= 0) {
       showMesage("Please insert a quantity valid.", "error");
-    } else if (measure === "DEFAULT") {
+    } else if (operationForm.measure === "DEFAULT") {
       showMesage("Please insert a Operation Measure", "error");
-    } else if (buy <= 0) {
+    } else if (operationForm.buy <= 0) {
       showMesage("Please insert a Operation Buy valid", "error");
-    } else if (sale <= 0) {
+    } else if (operationForm.sale <= 0) {
       showMesage("Please insert a Operation Sale valid", "error");
     } else {
       showMesage("Operation add", "success");
 
-      let operationPayload 
+      let operationPayload;
       resetFormProd();
 
-      if (mode === "buy") {
+      if (operationForm.mode === "buy") {
         operationPayload = {
-        mode,
-        type,
-        name,
-        quantity,
-        measure,
-        buy,
-        sale,
-        idOperation: uuidv4(),
-        idProduct: uuidv4(),
-        date: Date.now(),
-        quantityRest: quantity
-      };
+         ...operationForm,
+          idOperation: uuidv4(),
+          idProduct: uuidv4(),
+          date: Date.now(),
+          quantityRest: operationForm.quantity,
+        };
         dispatch({
           type: "add-buyOperation",
           payload: {
             operation: operationPayload,
           },
         });
-      } else if (mode === "sale") {
+      } else if (operationForm.mode === "sale") {
         operationPayload = {
-        mode,
-        type,
-        name,
-        quantity,
-        measure,
-        buy,
-        sale,
-        idOperation: uuidv4(),
-        idProduct: idProduct,
-        date: Date.now(),
-      };
-     
+          ...operationForm,
+          idOperation: uuidv4(),
+          idProduct: operationForm.idProduct,
+          date: Date.now(),
+        };
+
         dispatch({
           type: "add-saleOperation",
           payload: {
@@ -328,8 +289,25 @@ const FormProduct = () => {
   };
 
   const isSale = () => {
-    return mode === "sale";
+    return operationForm.mode === "sale";
   };
+
+ 
+
+  const handleLabelSelect = (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement> )=> e.target.name === 'mode' || e.target.name === 'type' || e.target.name === 'name' || e.target.name === 'measure' ? (
+    setOperationForm({
+      ...operationForm,
+      [e.target.name] : e.target.value
+
+      })
+  ) : (
+       setOperationForm({
+      ...operationForm,
+      [e.target.name] : +e.target.value
+    })
+  )
+
+
 
   return (
     <>
@@ -344,69 +322,65 @@ const FormProduct = () => {
                 <SelectItem
                   name="mode"
                   optionList={modeProduct}
-                  handleSelect={setMode}
-                  value={mode}
+                  handleSelect={handleLabelSelect}
+                  value={operationForm.mode}
                 />
 
                 <SelectItem
                   name="type"
                   optionList={typeProduct}
-                  handleSelect={setType}
-                  value={type}
+                  handleSelect={handleLabelSelect}
+                  value={operationForm.type}
                 />
 
-                {mode === "buy" || mode === "DEFAULT" ? (
-                  <LabelInputString
+                {operationForm.mode === "buy" || operationForm.mode === "DEFAULT" ? (
+                  <LabelInput
                     name="name"
-                    value={name}
+                    type='string'
+                    value={operationForm.name}
                     labelName={"Product-name"}
-                    handleInput={setName}
+                    handleInput={handleLabelSelect}
                   />
                 ) : (
-                  // <p>Hola</p>
-                  //
+                  
                   <SelectName
                     operationBuy={operationBuy}
-                    handleData={{
-                      setName: setName,
-                      setBuy: setBuy,
-                      setMeasure: setMeasure,
-                      setSale: setSale,
-                      setType: setType,
-                      setIdProduct: setIdProduct
-                    }}
-                    type={type}
-                    name={name}
+                    handleData={setOperationForm}
+                    type={operationForm.type}
+                    name={operationForm.name}
                   />
                 )}
 
-                <LabelInputNumber
+                <LabelInput
                   name="quantity"
                   labelName="Quantity"
-                  value={quantity}
-                  handleInput={setQuantity}
+                  type="number"
+                  value={operationForm.quantity}
+                  handleInput={handleLabelSelect}
                 />
 
                 <SelectItem
                   name="measure"
                   optionList={measureProduct}
-                  handleSelect={setMeasure}
-                  value={measure}
+                  handleSelect={handleLabelSelect}
+                  value={operationForm.measure}
                   disabled={isSale()}
                 />
 
-                <LabelInputNumber
+                <LabelInput
                   name="buy"
                   labelName="Buy-Price"
-                  value={buy}
-                  handleInput={setBuy}
+                  type="number"
+                  value={operationForm.buy}
+                  handleInput={handleLabelSelect}
                   disabled={isSale()}
                 />
-                <LabelInputNumber
+                <LabelInput
                   name="sale"
                   labelName="Sale-Price"
-                  value={sale}
-                  handleInput={setSale}
+                  type="number"
+                  value={operationForm.sale}
+                  handleInput={handleLabelSelect}
                   disabled={isSale()}
                 />
               </div>
@@ -419,8 +393,6 @@ const FormProduct = () => {
                 <ButtonGeneric title="Reset" handleButon={resetFormProd} />
               </div>
             </form>
-            
-            
           </div>
         </div>
       )}
