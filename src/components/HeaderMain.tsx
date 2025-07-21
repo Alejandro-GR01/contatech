@@ -28,7 +28,7 @@ const HeaderMain = () => {
                         </Link>
 
                     ) : (
-                        <div className="flex gap-1 md:gap-8 items-center justify-between">
+                        <div className="flex flex-col md:flex-row gap-1 md:gap-8 items-center justify-between">
                             <div className="flex flex-col justify-center items-center  p-2  hover-scale-105">
                                 <UserIcon   className="text-blue-700  w-10 h-10 md:w-16 md:h-16 hover:text-shadow-xs text-shadow-blue-700   " />
                                 <p className="text-sm md:text-base font-medium  text-white capitalize">{userName}  </p>
