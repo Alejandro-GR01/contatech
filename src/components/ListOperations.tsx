@@ -38,16 +38,16 @@ const ListOperations = () => {
                 <p>{oper.name}</p>
               </div>
 
-              <p>
+              <p className={oper.mode === 'buy' ? 'font-bold' : 'font-medium'}>
                 {oper.quantity}{" "}
                 <span className="capitalize">{oper.measure}</span>
               </p>
               <p>
-                <span className="text-red-700 font-light">B</span> $
+                <span className="text-red-700 font-medium">B</span> $
                 <span>{oper.buy}</span>
               </p>
               <p>
-                <span className="text-green-700 font-light">S</span> $
+                <span className="text-green-700 font-medium">S</span> $
                 <span>{oper.sale}</span>
               </p>
               <button
