@@ -8,7 +8,7 @@ import {
 import ButtonGeneric from "./ButtonGeneric";
 import Mesage from "./Mesage";
 import { v4 as uuidv4 } from "uuid";
-import type { Operation } from "../types";
+import type { Operation, OperationBuy } from "../types";
 import useOperation from "../hooks/useOperation";
 
 type SelectitemProps = {
@@ -31,10 +31,11 @@ type LabelInputProps = {
 };
 
 type SelectNameProps = {
-  operationBuy: Operation[];
+  operationBuy: OperationBuy[];
   handleData:Dispatch<SetStateAction<OperationForm>>;
   type: string;
   name: string;
+   setQuantityRest: Dispatch<SetStateAction<number>>
 };
 
 type OperationForm = Omit<Operation, "idOperation" | "date">;
@@ -116,6 +117,7 @@ const SelectName = ({
   handleData,
   type,
   name,
+  setQuantityRest
 }: SelectNameProps) => {
   const filterType = operationBuy.filter(
     (operation) => operation.type === type
@@ -124,6 +126,9 @@ const SelectName = ({
   const operationBuySelected = (name: string) => {
     const buyFind = operationBuy.find((operation) => operation.name === name);
     if (buyFind) {
+      setQuantityRest(buyFind.quantityRest)
+      console.log(buyFind.quantityRest)
+
       /// Para cambiar si es sale y que solo se muestren los valores del sale seleccionado
       handleData((data) => {
         return{
@@ -137,12 +142,7 @@ const SelectName = ({
 
         }
       })
-      // handleData.setName(buyFind.name);
-      // handleData.setBuy(buyFind.buy);
-      // handleData.setMeasure(buyFind.measure);
-      // handleData.setSale(buyFind.sale);
-      // handleData.setType(buyFind.type);
-      // handleData.setIdProduct(buyFind.idProduct);
+      
     }
   };
 
@@ -224,6 +224,7 @@ const FormProduct = () => {
   }
 
   const [operationForm, setOperationForm] = useState<OperationForm>(initialForm);
+  const [quantityRest, setQuantityRest] = useState(0)
 
 
 
@@ -254,7 +255,7 @@ const FormProduct = () => {
       showMesage("Operation add", "success");
 
       let operationPayload;
-      resetFormProd();
+     
 
       if (operationForm.mode === "buy") {
         operationPayload = {
@@ -264,6 +265,7 @@ const FormProduct = () => {
           date: Date.now(),
           quantityRest: operationForm.quantity,
         };
+        resetFormProd();
         dispatch({
           type: "add-buyOperation",
           payload: {
@@ -271,20 +273,33 @@ const FormProduct = () => {
           },
         });
       } else if (operationForm.mode === "sale") {
-        operationPayload = {
-          ...operationForm,
-          idOperation: uuidv4(),
-          idProduct: operationForm.idProduct,
-          date: Date.now(),
-        };
+        if(operationForm.quantity > quantityRest){
+        
+          showMesage(`Please insert a quantity sale valid the ${operationForm.name} only have ${quantityRest}${operationForm.measure}`, 'error')
+          setOperationForm({
+            ...operationForm,
+            quantity: 0
+          })
+          return
+        } else {
 
-        dispatch({
-          type: "add-saleOperation",
-          payload: {
-            operation: operationPayload,
-          },
-        });
+          operationPayload = {
+            ...operationForm,
+            idOperation: uuidv4(),
+            idProduct: operationForm.idProduct,
+            date: Date.now(),
+          };
+          resetFormProd();
+  
+          dispatch({
+            type: "add-saleOperation",
+            payload: {
+              operation: operationPayload,
+            },
+          });
+        }
       }
+       
     }
   };
 
@@ -348,6 +363,7 @@ const FormProduct = () => {
                     handleData={setOperationForm}
                     type={operationForm.type}
                     name={operationForm.name}
+                    setQuantityRest = {setQuantityRest}
                   />
                 )}
 

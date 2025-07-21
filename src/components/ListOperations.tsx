@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { OperationContext } from "../context/OperationContext";
-import { ArrowRightCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftCircleIcon, ArrowRightCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import type { Operation } from "../types";
 
 const ListOperations = () => {
@@ -23,11 +23,18 @@ const ListOperations = () => {
               className="px-3 py-2 rounded-xl grid grid-cols-7 items-center max-w-4xl mx-auto    bg-gray-100 shadow-lg"
             >
               <div className="flex items-center gap-2 md:gap-4 col-span-3 md:pl-9">
-                <ArrowRightCircleIcon
-                  className={`w-8 h-8 md:w-12 md:h-12 ${
-                    oper.mode === "buy" ? " text-red-600" : " text-green-600"
-                  } `}
-                />
+                {oper.mode === 'buy' ? (
+                  <ArrowRightCircleIcon
+                  className={`w-8 h-8 md:w-12 md:h-12 text-red-600  `}
+                /> ) : (
+                  <ArrowLeftCircleIcon
+                  className={`w-8 h-8 md:w-12 md:h-12 text-green-600  `}
+                  />
+                )
+
+               
+                  }
+                
                 <p className="capitalize">{oper.name}</p>
               </div>
 
@@ -46,9 +53,9 @@ const ListOperations = () => {
               <button
                 type="button"
                 onClick={() => deleteOperation(oper.idOperation)}
-                className="pl-19"
+                className="px-5"
               >
-                <XCircleIcon className="w-8 h-8 md:w-12 md:h-12 text-red-700 hover:text-red-800 hover-scale-105" />
+                <XCircleIcon className="w-8 h-8 md:w-12 md:h-12  text-red-700 hover:text-red-800 hover-scale-105" />
               </button>
             </div>
           ))}

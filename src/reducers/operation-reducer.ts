@@ -53,18 +53,32 @@ export const operationReducer = (
     };
   }
   if (actions.type === "add-saleOperation") {
-    const findBuyProd = state.operationBuy.filter(operation => operation.idProduct === actions.payload.operation.idProduct)[0]
-    if(findBuyProd.quantity < actions.payload.operation.quantity){
-        throw new MessageEvent ('You dont have adedd the sales operation')
-        
-    }else {
+    const BuyProdCopy = [...state.operationBuy]
+    const findBuyProdIndex = state.operationBuy.findIndex(operation => operation.idProduct === actions.payload.operation.idProduct)
+    const newBuyArray = BuyProdCopy.map((prod, i)=> {
+      if(i === findBuyProdIndex){
+        const newRest = prod.quantityRest - actions.payload.operation.quantity
+        return {
+          ...prod,
+          quantityRest : newRest
+        }
+      } else {
+      return prod
+      }
+    })
+
+   
+    
+    
         return {
           ...state,
+          operationBuy: newBuyArray,
           operationSale: [...state.operationSale, actions.payload.operation],
           operationAll: [...state.operationAll, actions.payload.operation],
+
         };
 
-    } 
+
   }
   if (actions.type === "delete-operation") {
     const operationToDelete = state.operationAll.find(
