@@ -1,9 +1,9 @@
 const WorkingLayout = () => {
   return (
-    <div className="h-screen md:h-full w-full bg-slate-500 flex justify-center items-center">
+    <div className="h-screen md:h-screen w-full bg-slate-500 flex justify-center items-center">
       <div className="flex flex-col md:flex-row items-center md:justify-center gap-8 p-2 mx-auto">
         <svg
-          className="text-white w-32 h-32 "
+          className="text-white w-20 h-20 md:w-32 md:h-32 "
           data-slot="icon"
           aria-hidden="true"
           fill="none"
@@ -18,7 +18,7 @@ const WorkingLayout = () => {
             stroke-linejoin="round"
           ></path>
         </svg>
-        <h2 className="text-4xl font-bold text-white text-center md:text-left">Place under maintenance</h2>
+        <h2 className="text-2xl md:text-4xl font-bold text-white text-center md:text-left">Place under maintenance</h2>
       </div>
     </div>
   );

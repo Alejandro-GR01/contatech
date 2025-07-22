@@ -14,6 +14,7 @@ import HomeLayout from "./layouts/HomeLayout";
 import UseItLayout from "./layouts/UseItLayout";
 // import ContactLayout from "./layouts/ContactLayout";
 import WorkingLayout from "./layouts/WorkingLayout";
+import OperationDetail from "./layouts/OperationDetail";
 
 export type UserData = {
   user: string;
@@ -34,6 +35,7 @@ function App() {
           {/* <Route path="how" element={<HowLayout />} /> */}
           <Route path="use" element={<UseItLayout />} />
           {/* <Route path="contact" element={<ContactLayout />} /> */}
+          <Route path="operation-detail" element={<OperationDetail/>} />
           <Route path="*" element={<WorkingLayout /> } />
         </Route>
         <Route path="/login" element={<RegisterLogin/>} />

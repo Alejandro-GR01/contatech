@@ -33,7 +33,7 @@ body {
 }
 
 .benefit-list li {
-  @apply px-5 py-4 text-xl text-slate-800 font-medium bg-gray-300 border border-gray-400 rounded-xl shadow-lg shadow-slate-800 hover:bg-gray-200 hover:text-slate-900 hover:scale-3d hover:scale-105 transition-all ease-in-out duration-500
+  @apply px-5 py-4 font-semibold text-base md:text-xl text-slate-800 bg-gray-300 border border-gray-400 rounded-xl shadow-lg shadow-slate-800 hover:bg-gray-200 hover:text-slate-900 hover:scale-3d hover:scale-105 transition-all ease-in-out duration-500
 }
 
 .listOperation-title{

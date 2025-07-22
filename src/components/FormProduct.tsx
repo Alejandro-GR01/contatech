@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import {
   measureProduct,
   modeProduct,
@@ -55,7 +55,7 @@ const SelectItem = ({
       onChange={handleSelect}
       className={`${
         disabled ? "opacity-80 text-gray-500 " : ""
-      }text-lg font-semibold bg-gray-300 rounded-lg px-2 py-0 block `}
+      } text-lg font-semibold bg-gray-300 rounded-lg px-2 py-2 block ${value === 'buy' ? 'text-red-800' : value === 'sale' && ' text-green-800'}  `}
       disabled={disabled}
     >
       {optionList.map((item) => (
@@ -63,7 +63,7 @@ const SelectItem = ({
           disabled={item.disabled}
           key={item.id}
           value={item.value}
-          className="disabled:bg-gray-400 disabled:text-gray-600"
+          className={`${item.value === 'buy' ? 'text-red-700' : item.value === 'sale' && ' text-green-700'} disabled:bg-gray-400 disabled:text-gray-600 `}
         >
           {item.name}{" "}
         </option>
@@ -120,10 +120,10 @@ const SelectName = ({
   setQuantityRest
 }: SelectNameProps) => {
 
-  const operationBuyAvilable = operationBuy.filter(oper => oper.quantityRest > 0)
-  const filterType = operationBuyAvilable.filter(
+  const operationBuyAvilable = useMemo(()=> operationBuy.filter(oper => oper.quantityRest > 0) , [operationBuy] ) 
+  const filterType = useMemo(()=> operationBuyAvilable.filter(
     (operation) => operation.type === type
-  );
+  ) ,[type, operationBuyAvilable] ) ;
 
   const operationBuySelected = (name: string) => {
     const buyFind = operationBuyAvilable.find((operation) => operation.name === name);
@@ -148,59 +148,49 @@ const SelectName = ({
     }
   };
 
+  const operationsToSale = useMemo(()=>
+    {
+      if(operationBuyAvilable.length === 0 ){
+        return []
+      } else if (type === 'DEFAULT'){
+        return operationBuyAvilable
+      } else if (filterType.length > 0 ){
+        return filterType
+      } else {
+        return []
+      }
+
+    } , [operationBuyAvilable, type  ])
+
   return (
     <>
-      {operationBuyAvilable.length === 0 ? (
+      {operationsToSale.length === 0 ? (
         <NotProductAvilable />
-      ) : type === "DEFAULT"  ? (
-        <select
-          name="name"
-          id="name"
-          value={name}
-          onChange={(e) => {
-            operationBuySelected(e.target.value);
-          }}
-          className="text-lg font-semibold bg-gray-300 rounded-lg px-2 "
-        >
-          <option
-            disabled={true}
-            value=""
-            className="bg-gray-400 text-gray-600"
-          >
-            Select a product
-          </option>
-          {operationBuyAvilable.map((operation) => (
-            <option key={operation.name} value={operation.name}>
-              {operation.name}
-            </option>
-          ))}
-        </select>
-      ) : filterType.length > 0 ? (
-        <select
-          name="name"
-          id="name"
-          value={name}
-          onChange={(e) => {
-            operationBuySelected(e.target.value);
-          }}
-          className="text-lg font-semibold bg-gray-300 rounded-lg px-2 "
-        >
-          <option
-            disabled={true}
-            value=""
-            className="bg-gray-400 text-gray-600"
-          >
-            Select a product
-          </option>
-          {filterType.map((operation) => (
-            <option key={operation.name} value={operation.name}>
-              {operation.name}
-            </option>
-          ))}
-        </select>
       ) : (
-        <NotProductAvilable />
-      )}
+        <select
+          name="name"
+          id="name"
+          value={name}
+          onChange={(e) => {
+            operationBuySelected(e.target.value);
+          }}
+          className="text-lg font-semibold bg-gray-300 rounded-lg px-2 py-2 "
+        >
+          <option
+            disabled={true}
+            value=""
+            className="bg-gray-400 text-gray-600"
+          >
+            Select a product
+          </option>
+          {operationsToSale.map((operation) => (
+            <option key={operation.name} value={operation.name}>
+              {operation.name}
+            </option>
+          ))}
+        </select>
+      )
+    } 
     </>
   );
 };

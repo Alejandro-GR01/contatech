@@ -4,17 +4,20 @@ export type State = {
   operationBuy: OperationBuy[];
   operationSale: Operation[];
   operationAll: Operation[];
+  idOperationDetail : Operation['idOperation']
 };
 
 export type Actions =
   | { type: "add-buyOperation"; payload: { operation: OperationBuy } }
   | { type: "add-saleOperation"; payload: { operation: Operation } }
-  | { type: "delete-operation"; payload: { id: Operation["idOperation"] } };
+  | { type: "delete-operation"; payload: { id: Operation["idOperation"] } }
+  |{type:'change-idOperation'; payload: {idOperation : Operation['idOperation']}}
 
 export const initialState: State = {
   operationBuy: [],
   operationSale: [],
   operationAll: [],
+  idOperationDetail: ''
 };
 
 export const operationReducer = (
@@ -131,6 +134,12 @@ export const operationReducer = (
         operationSale: saleRes,
         operationAll: allRes,
       };
+    }
+  }
+  if(actions.type === 'change-idOperation'){
+    return{
+      ...state,
+      idOperationDetail : actions.payload.idOperation
     }
   }
   return state;

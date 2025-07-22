@@ -7,7 +7,7 @@ const NavegationBar = () => {
      <nav className=" p-1 bg-blue-600 text-white">
       <ul className=" max-w-6xl mx-auto flex flex-col md:flex-row gap-2 justify-evenly items-center py-1 text-base md:text-lg  font-semibold ">
       {navMenu.map(item=> (
-        <NavLink to={item.link} key={item.id} className={({isActive})=> isActive ? 'text-blue-200 hover:cursor-default': 'hover-scale-105'} >
+        <NavLink to={item.link} key={item.id} className={({isActive})=> isActive ? 'text-blue-400  hover:cursor-default': 'hover-scale-105 text-white'} >
 
         <li  >
           {item.name}

@@ -4,9 +4,9 @@ const HomeLayout = () => {
   return (
     <div >
       <section className="max-w-4xl mx-auto relative z-10 py-20  md:pb-40">
-        <div className="max-w-4xl mx-4 md:pl-16 pt-20 md:p-0 relative z-10 ">
+        <div className="max-w-4xl mx-4 md:pl-16 py-16 md:py-20 relative z-10 ">
           <div className=" relative z-10">
-            <h1 className=" px-8  text-slate-800 text-4xl md:text-5xl font-bold text-shadow-xs  ">
+            <h1 className=" px-8  text-slate-800  text-4xl md:text-5xl font-bold text-shadow-xs  ">
               It's never been easier
             </h1>
 
@@ -31,8 +31,8 @@ const HomeLayout = () => {
       </section>
 
       <section className="relative bg-blue-900   ">
-        <div className="relative z-10 py-12 ">
-          <h2 className="benefit-title">Benefit</h2>
+        <div className="relative z-10 py-20 ">
+          <h2 className="benefit-title py-8">Benefit</h2>
           <div className="space-y-16  md:flex md:items-center md:gap-8 max-w-4xl mx-auto ">
             <ul className="benefit-list  ">
               <li>
