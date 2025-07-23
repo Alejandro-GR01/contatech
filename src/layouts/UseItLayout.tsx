@@ -3,6 +3,7 @@ import FormProduct from "../components/FormProduct";
 import useOperation from "../hooks/useOperation";
 import ListOperations from "../components/ListOperations";
 import ButtonGeneric from "../components/ButtonGeneric";
+import NavOperationList from "../components/NavOperationList";
 
 const UseItLayout = () => {
   const { userName } = useOperation();
@@ -23,12 +24,17 @@ const UseItLayout = () => {
       ) : (
         <div>
           <FormProduct />
-          <div className="flex items-center justify-center pb-12 md:py-14">
+          <div className="flex items-center justify-center pb-12 md:py-14 md:hidden ">
             <Link to={"operation-list"}>
               <ButtonGeneric title="List Operations" />
             </Link>
+          </div >
+          <div className="hidden md:block">
+
+          <ListOperations >
+            <NavOperationList />
+            </ListOperations>
           </div>
-          <ListOperations />
         </div>
       )}
     </>

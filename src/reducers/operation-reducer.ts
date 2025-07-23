@@ -36,6 +36,7 @@ export const operationReducer = (
       idOperation,
       idProduct,
       date,
+      user
     } = actions.payload.operation;
     const operationToAll = {
       mode,
@@ -48,6 +49,7 @@ export const operationReducer = (
       idOperation,
       idProduct,
       date,
+      user
     };
     return {
       ...state,

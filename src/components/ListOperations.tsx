@@ -19,7 +19,7 @@ const ListOperations = ({
     else return [];
   }, [mode, state]);
   return (
-    <div className="mx-auto px-4   pt-10 pb-4 md:pt-20 md:pb-8 space-y-3  md:text-xl md:font-medium   bg-slate-700">
+    <div className="mx-auto px-4 md:px-8 h-full  pt-10 pb-4 md:pt-20 md:pb-8 space-y-3  md:text-xl md:font-medium   bg-slate-700 ">
       {operationToShow?.length > 0 ? (
         <>
           <h3 className="listOperation-title">{`List Operations ${

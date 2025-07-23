@@ -7,10 +7,13 @@ const ListOperationLayout = () => {
 
   return (
     <>
+    <div className="h-screen">
+
       <ListOperations mode={mode}>
 
        <NavOperationList />
       </ListOperations>
+    </div>
     </>
   );
 };

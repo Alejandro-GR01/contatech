@@ -1,5 +1,6 @@
 import type { OperationDetail } from "../types";
 import IconType from "./IconType";
+import { UserIcon } from "@heroicons/react/24/solid";
 
 const CardDetail = ({ operation }: { operation: OperationDetail }) => {
   return (
@@ -25,34 +26,50 @@ const CardDetail = ({ operation }: { operation: OperationDetail }) => {
             >
               {operation.mode}
             </p>
-            <p className="font-bold text-base md:text-lg text-blue-900">    
-              {operation.quantity} - {operation.measure} <span className="text-gray-700 font-medium">{operation.mode}</span>
+            <p className="font-bold text-base md:text-lg text-blue-900">
+              {operation.quantity} - {operation.measure}{" "}
+              <span className="text-gray-700 font-medium">
+                {operation.mode}
+              </span>
             </p>
             {operation.quantityRest && (
               <p className="block font-bold text-base md:text-lg text-green-900">
-                {operation.quantityRest} - {operation.measure} <span className="text-gray-700 font-medium">rest</span>
+                {operation.quantityRest} - {operation.measure}{" "}
+                <span className="text-gray-700 font-medium">rest</span>
               </p>
             )}
           </div>
         </div>
         <div className="flex flex-col gap-2">
- 
-        <p className="font-bold text-black text-sm  "> ProductId :{''} 
-          <span className=" text-xs text-blue-900 hover:underline hover:cursor-default  "> {operation.idProduct} </span>
-         
-        </p>
-        <p className=" text-black text-sm font-bold  ">OperationId :{''} 
-          <span className="text-xs text-blue-900 hover:underline hover:cursor-default"> {operation.idOperation} </span>
-          
-        </p>
-        <p className=" text-black text-sm font-bold  ">User :{''} 
-          <span className="text-xs text-blue-900 hover:underline hover:cursor-default"> {operation.user} </span>
-          
-        </p>
+          <p className="font-bold text-black text-sm  ">
+            {" "}
+            ProductId :{""}
+            <span className=" text-xs text-blue-900 hover:underline hover:cursor-default  ">
+              {" "}
+              {operation.idProduct}{" "}
+            </span>
+          </p>
+          <p className=" text-black text-sm font-bold  ">
+            OperationId :{""}
+            <span className="text-xs text-blue-900 hover:underline hover:cursor-default">
+              {" "}
+              {operation.idOperation}{" "}
+            </span>
+          </p>
+          <div className="flex gap-1 ">
+            <div>
+              <UserIcon title={operation.user} className="h-4 w-4 text-black" />
+            </div>
+
+            <p className="font-bold text-xs text-blue-900 hover:underline hover:cursor-default">
+              {" "}
+              {operation.user}
+            </p>
+          </div>
         </div>
       </div>
     </>
   );
 };
 
-export default CardDetail
+export default CardDetail;
