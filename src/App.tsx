@@ -1,4 +1,3 @@
-
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -13,8 +12,12 @@ import HomeLayout from "./layouts/HomeLayout";
 // import HowLayout from "./layouts/HowLayout";
 import UseItLayout from "./layouts/UseItLayout";
 // import ContactLayout from "./layouts/ContactLayout";
-import WorkingLayout from "./layouts/WorkingLayout";
+// import WorkingLayout from "./layouts/WorkingLayout";
 import OperationDetail from "./layouts/OperationDetail";
+// import ListOperations from "./components/ListOperations";
+import ListOperationLayout from "./layouts/ListOperationLayout";
+import WorkingLayout from "./layouts/WorkingLayout";
+import NotFound from "./layouts/NotFound";
 
 export type UserData = {
   user: string;
@@ -22,35 +25,43 @@ export type UserData = {
 };
 
 function App() {
-
-
-
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route  >
-        <Route path="/" element={<RootLayout/>} >
-          <Route index element={<HomeLayout/>} />
+      <Route>
+        <Route path="/" element={<RootLayout />}>
+          <Route index element={<HomeLayout />} />
+          <Route path="about" element={<WorkingLayout />} />
           {/* <Route path="about" element={<AboutLayout />} /> */}
+          <Route path="blog" element={<WorkingLayout />} />
           {/* <Route path="blog" element={<BlogLayout />} /> */}
+          <Route path="how" element={<WorkingLayout />} />
           {/* <Route path="how" element={<HowLayout />} /> */}
-          <Route path="use" element={<UseItLayout />} />
+          <Route path="use">
+            <Route index element={<UseItLayout />} />
+            <Route path="operation-list" >
+              <Route index element={<ListOperationLayout />}/>
+              <Route
+                path=":mode"
+                element={<ListOperationLayout />}
+              />
+            </Route>
+          </Route>
+          <Route path="contact" element={<WorkingLayout />} />
           {/* <Route path="contact" element={<ContactLayout />} /> */}
-          <Route path="operation-detail" element={<OperationDetail/>} />
-          <Route path="*" element={<WorkingLayout /> } />
+          <Route path="operation-detail" element={<OperationDetail />} />
+          <Route path="*" element={<NotFound /> } />
+          
         </Route>
-        <Route path="/login" element={<RegisterLogin/>} />
+        <Route path="/login" element={<RegisterLogin />} />
       </Route>
     )
   );
 
-  
-
   return (
-  <>
-    <RouterProvider router={router} />
-  </>
-
-  )
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;

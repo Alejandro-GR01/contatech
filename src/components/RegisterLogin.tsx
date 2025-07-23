@@ -69,8 +69,8 @@ function RegisterLogin() {
 
   return (
     <>
-      <div className="relative  overflow-hidden  mx-auto px-2  flex items-center min-h-screen">
-        <div className="z-10 relative max-w-xl my-20 mx-auto  py-4   md:mx-auto  border border-gray-300 rounded-lg shadow-xl  login-gradient">
+      <div className="relative  overflow-hidden  mx-auto px-2  flex items-center h-screen">
+        <div className="z-10 relative max-w-xl my-20 mx-auto  py-4   border border-gray-300 rounded-lg shadow-xl  login-gradient">
           <div className=" flex   gap-4 justify-between items-center  mx-auto ">
             <div className="flex items-center px-4 py-4  mr-8 ">
               <img

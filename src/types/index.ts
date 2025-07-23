@@ -8,9 +8,14 @@ export type Operation ={
     sale: number,
     idOperation: string,
     idProduct : string,
+    user: string
     date: number
 }
 
 export type OperationBuy = Operation &{
     quantityRest: number
 }
+
+export type OperationDetail = Operation & {
+  quantityRest?: number;
+};

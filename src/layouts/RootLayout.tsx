@@ -6,11 +6,17 @@ import ButtonNavBefore from "../components/ButtonNavBefore";
 const RootLayout = () => {
   return (
     <>
-      <div className="relative overflow-x-hidden ">
-        <div className="relative z-10">
+      <div className="relative overflow-x-hidden min-h-screen">
+        <div className="relative z-10 min-h-screen">
+          <div className="relative">
+
           <HeaderMain />
           <NavegationBar />
+          </div>
+          <div className="relative min-h-screen">
+
           <Outlet />
+          </div>
         </div>
        
         

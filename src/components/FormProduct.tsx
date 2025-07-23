@@ -213,6 +213,7 @@ const FormProduct = () => {
     buy: 0,
     sale: 0,
     idProduct: "",
+    user: ''
   }
 
   const [operationForm, setOperationForm] = useState<OperationForm>(initialForm);
@@ -256,6 +257,7 @@ const FormProduct = () => {
           idProduct: uuidv4(),
           date: Date.now(),
           quantityRest: operationForm.quantity,
+          user: userName
         };
         resetFormProd();
         dispatch({
@@ -280,6 +282,7 @@ const FormProduct = () => {
             idOperation: uuidv4(),
             idProduct: operationForm.idProduct,
             date: Date.now(),
+            user: userName
           };
           resetFormProd();
   
@@ -398,6 +401,7 @@ const FormProduct = () => {
                   title="Add operation"
                   handleButon={validationFormProduct}
                 />
+                
                 <ButtonGeneric title="Reset" handleButon={resetFormProd} />
               </div>
             </form>
