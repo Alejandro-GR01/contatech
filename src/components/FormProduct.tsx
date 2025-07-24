@@ -55,7 +55,7 @@ const SelectItem = ({
       onChange={handleSelect}
       className={`${
         disabled ? "opacity-80 text-gray-500 " : ""
-      } text-lg font-semibold bg-gray-300 rounded-lg px-2 py-2 block ${value === 'buy' ? 'text-red-800' : value === 'sale' && ' text-green-800'}  `}
+      } text-lg font-semibold bg-gray-300 rounded-lg px-2 py-2 block ${value === 'buy' ? 'text-red-800' : value === 'sale' && ' text-green-800'}   `}
       disabled={disabled}
     >
       {optionList.map((item) => (
@@ -323,7 +323,7 @@ const FormProduct = () => {
     <>
       {userName !== "" && (
         <div className=" p-2 md:px-6 ">
-          <div className="max-w-3xl min-h-50 mx-auto my-12 rounded-2xl  py-8 px-6 bg-gray-200">
+          <div className="max-w-3xl min-h-50 mx-auto my-12 rounded-2xl  py-8 px-6 bg-gray-200 border-2  border-gray-300 shadow-2xl">
             <h2 className="text-3xl text-center font-bold text-blue-600 text-shadow-xs  shadow-blue-600 py-8">
               Operations:
             </h2>

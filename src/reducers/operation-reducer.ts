@@ -13,17 +13,27 @@ export type Actions =
   | { type: "delete-operation"; payload: { id: Operation["idOperation"] } }
   |{type:'change-idOperation'; payload: {idOperation : Operation['idOperation']}}
 
-export const initialState: State = {
-  operationBuy: [],
+const initialStorage = () : State => {
+  const localStorageOperations = localStorage.getItem('operations')
+  return localStorageOperations ? JSON.parse(localStorageOperations) : initialOperDefault
+}
+
+const initialOperDefault = {
+operationBuy: [],
   operationSale: [],
   operationAll: [],
   idOperationDetail: ''
-};
+  }
+
+export const initialState: State = initialStorage()
+
+
 
 export const operationReducer = (
   state: State = initialState,
   actions: Actions
 ) => {
+
   if (actions.type === "add-buyOperation") {
     const {
       mode,

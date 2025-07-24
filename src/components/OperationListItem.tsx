@@ -26,7 +26,7 @@ const OperationListItem = ({ operation }: { operation: Operation }) => {
   ) => {
     e.stopPropagation();
     dispatch({ type: "change-idOperation", payload: { idOperation: id } });
-    navigate("/operation-detail");
+    navigate(`/operation-detail/${operation.idOperation}`);
   };
 
   return (

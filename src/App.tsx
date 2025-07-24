@@ -18,6 +18,8 @@ import OperationDetail from "./layouts/OperationDetail";
 import ListOperationLayout from "./layouts/ListOperationLayout";
 import WorkingLayout from "./layouts/WorkingLayout";
 import NotFound from "./layouts/NotFound";
+import useOperation from "./hooks/useOperation";
+import { useEffect } from "react";
 
 export type UserData = {
   user: string;
@@ -25,6 +27,12 @@ export type UserData = {
 };
 
 function App() {
+  const {state} = useOperation()
+
+  useEffect(()=> {
+    localStorage.setItem('operations', JSON.stringify(state))
+  }, [state])
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>

@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from "react";
 import useOperation from "../hooks/useOperation";
 import CardDetail from "../components/CardDetail";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const OperationDetail = () => {
   const { state } = useOperation();
+  const {idOperation} = useParams()
 
   const navigate = useNavigate();
 
