@@ -21,18 +21,18 @@ const OperationListItem = ({ operation }: { operation: Operation }) => {
   };
 
   const handleIdOperationDetails = (
-    id: Operation["idOperation"],
+   
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    dispatch({ type: "change-idOperation", payload: { idOperation: id } });
+    // dispatch({ type: "change-idOperation", payload: { idOperation: id } });
     navigate(`/operation-detail/${operation.idOperation}`);
   };
 
   return (
     <div
       className="px-2 py-2 rounded-xl grid grid-cols-8 grid-rows-1 gap-1 justify-items-center items-center max-w-4xl mx-auto    bg-gray-100 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in"
-      onClick={(e) => handleIdOperationDetails(operation.idOperation, e)}
+      onClick={(e) => handleIdOperationDetails( e)}
     >
       {operation.mode === "buy" ? (
         <ArrowRightIcon className="w-8 h-8 md:w-10 md:h-10  text-red-600  " />

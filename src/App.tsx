@@ -13,13 +13,13 @@ import HomeLayout from "./layouts/HomeLayout";
 import UseItLayout from "./layouts/UseItLayout";
 // import ContactLayout from "./layouts/ContactLayout";
 // import WorkingLayout from "./layouts/WorkingLayout";
-import OperationDetail from "./layouts/OperationDetail";
 // import ListOperations from "./components/ListOperations";
 import ListOperationLayout from "./layouts/ListOperationLayout";
 import WorkingLayout from "./layouts/WorkingLayout";
 import NotFound from "./layouts/NotFound";
 import useOperation from "./hooks/useOperation";
 import { useEffect } from "react";
+import OperationDetailLayout from "./layouts/OperationDetailLayout";
 
 export type UserData = {
   user: string;
@@ -56,7 +56,7 @@ function App() {
           </Route>
           <Route path="contact" element={<WorkingLayout />} />
           {/* <Route path="contact" element={<ContactLayout />} /> */}
-          <Route path="operation-detail" element={<OperationDetail />} />
+          <Route path="operation-detail/:idOperation" element={<OperationDetailLayout />} />
           <Route path="*" element={<NotFound /> } />
           
         </Route>

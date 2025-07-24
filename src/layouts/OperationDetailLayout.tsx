@@ -3,34 +3,36 @@ import useOperation from "../hooks/useOperation";
 import CardDetail from "../components/CardDetail";
 import { useNavigate, useParams } from "react-router";
 
-const OperationDetail = () => {
+const OperationDetailLayout = () => {
   const { state } = useOperation();
   const {idOperation} = useParams()
 
+
   const navigate = useNavigate();
 
-  //HAy que quitar el id de producto detail
+
 
   
   const operationToShow = useMemo(() => {
     if (state.operationAll.length > 0) {
       return state.operationAll.filter(
-        (oper) => oper.idOperation === state.idOperationDetail
+        (oper) => oper.idOperation === idOperation
       )[0];
     }
-  }, [state.operationAll, state.idOperationDetail]);
+  }, [state, idOperation]);
   
   const operationShowBuy = useMemo(() => {
     if (operationToShow?.mode === "buy") {
       return state.operationBuy.filter(
-        (oper) => oper.idOperation === state.idOperationDetail
+        (oper) => oper.idOperation === idOperation
       )[0];
     }
-  }, [operationToShow, state]);
+  }, [state, operationToShow, idOperation]);
+  
   
   useEffect(()=> {
-    if(!operationToShow ) navigate('/') 
-  }, [operationToShow])
+    if(!idOperation ) navigate('/') 
+  }, [idOperation])
 
   return (
     <>
@@ -50,4 +52,4 @@ const OperationDetail = () => {
   );
 };
 
-export default OperationDetail;
+export default OperationDetailLayout;

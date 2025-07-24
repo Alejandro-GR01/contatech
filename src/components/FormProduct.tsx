@@ -160,7 +160,7 @@ const SelectName = ({
         return []
       }
 
-    } , [operationBuyAvilable, type  ])
+    } , [operationBuyAvilable, type , filterType ])
 
   return (
     <>

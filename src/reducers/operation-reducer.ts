@@ -4,14 +4,14 @@ export type State = {
   operationBuy: OperationBuy[];
   operationSale: Operation[];
   operationAll: Operation[];
-  idOperationDetail : Operation['idOperation']
+
 };
 
 export type Actions =
   | { type: "add-buyOperation"; payload: { operation: OperationBuy } }
   | { type: "add-saleOperation"; payload: { operation: Operation } }
   | { type: "delete-operation"; payload: { id: Operation["idOperation"] } }
-  |{type:'change-idOperation'; payload: {idOperation : Operation['idOperation']}}
+
 
 const initialStorage = () : State => {
   const localStorageOperations = localStorage.getItem('operations')
@@ -22,7 +22,7 @@ const initialOperDefault = {
 operationBuy: [],
   operationSale: [],
   operationAll: [],
-  idOperationDetail: ''
+
   }
 
 export const initialState: State = initialStorage()
@@ -148,11 +148,6 @@ export const operationReducer = (
       };
     }
   }
-  if(actions.type === 'change-idOperation'){
-    return{
-      ...state,
-      idOperationDetail : actions.payload.idOperation
-    }
-  }
+
   return state;
 };
