@@ -27,14 +27,14 @@ const CardDetail = ({ operation }: { operation: OperationDetail }) => {
               {operation.mode}
             </p>
             <p className="font-bold text-base md:text-lg text-blue-900">
-              {operation.quantity} - {operation.measure}{" "}
+              {operation.quantity}  {operation.measure}{" "}
               <span className="text-gray-700 font-medium">
                 {operation.mode}
               </span>
             </p>
             {operation.quantityRest && (
               <p className="block font-bold text-base md:text-lg text-green-900">
-                {operation.quantityRest} - {operation.measure}{" "}
+                {operation.quantityRest} {operation.measure}{" "}
                 <span className="text-gray-700 font-medium">rest</span>
               </p>
             )}

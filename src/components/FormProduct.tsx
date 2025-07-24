@@ -129,7 +129,7 @@ const SelectName = ({
     const buyFind = operationBuyAvilable.find((operation) => operation.name === name);
     if (buyFind) {
       setQuantityRest(buyFind.quantityRest)
-      console.log(buyFind.quantityRest)
+     
 
       /// Para cambiar si es sale y que solo se muestren los valores del sale seleccionado
       handleData((data) => {

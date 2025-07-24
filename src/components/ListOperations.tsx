@@ -11,7 +11,7 @@ const ListOperations = ({
 }) => {
   const { state } = useOperation();
 
-  console.log(mode);
+
   const operationToShow = useMemo(() => {
     if (!mode) return state.operationAll;
     else if (mode === "buy") return state.operationBuy;
