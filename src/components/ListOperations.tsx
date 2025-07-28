@@ -3,27 +3,27 @@ import OperationListItem from "./OperationListItem";
 import { useMemo, type ReactNode } from "react";
 
 const ListOperations = ({
-  mode,
+  filter,
   children,
 }: {
-  mode?: string | undefined;
+  filter?: string | undefined;
   children?: ReactNode;
 }) => {
   const { state } = useOperation();
 
 
   const operationToShow = useMemo(() => {
-    if (!mode) return state.operationAll;
-    else if (mode === "buy") return state.operationBuy;
-    else if (mode === "sale") return state.operationSale;
-    else return [];
-  }, [mode, state]);
+    if (!filter) return state.operationAll;
+    else if (filter === "buy") return state.operationBuy;
+    else if (filter === "sale") return state.operationSale;
+    else return state.operationAll.filter(oper => oper.idProduct === filter) ;
+  }, [filter, state]);
   return (
     <div className="mx-auto px-4 md:px-8 min-h-screen  pt-10 pb-4 md:pt-20 md:pb-8 space-y-3  md:text-xl md:font-medium   bg-slate-700 ">
       {operationToShow?.length > 0 ? (
         <>
           <h3 className="listOperation-title">{`List Operations ${
-            !mode ? "" : mode === "buy" ? "Buy" : mode === "sale" && "Sale"
+            !filter ? "" : filter === "buy" ? "Buy" : filter === "sale" ?"Sale" : ''
           }  `}</h3>
           {operationToShow.map((oper) => (
             <OperationListItem operation={oper} key={oper.idOperation} />
@@ -32,7 +32,7 @@ const ListOperations = ({
       ) : (
         <h3 className="listOperation-title">
           {` No operations ${
-            !mode ? "" : mode === "buy" ? "buy" : mode === "sale" && "sale"
+            !filter ? "" : filter === "buy" ? "buy" : filter === "sale" && "sale"
           }   added yet! Insert one. `}
         </h3>
       )}

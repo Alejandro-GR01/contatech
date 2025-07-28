@@ -31,7 +31,7 @@ const OperationListItem = ({ operation }: { operation: Operation }) => {
 
   return (
     <div
-      className="px-2 py-2 rounded-xl grid grid-cols-8 grid-rows-1 gap-2 justify-items-center items-center max-w-4xl mx-auto    bg-gray-100 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in"
+      className="px-2 py-2 rounded-xl grid grid-cols-8 grid-rows-1 gap-2 justify-items-center items-center max-w-4xl mx-auto    bg-gray-100 shadow-lg hover:scale-105 cursor-pointer hover:shadow-xl transition-all duration-300 ease-in"
       onClick={(e) => handleIdOperationDetails( e)}
     >
       {operation.mode === "buy" ? (
@@ -72,7 +72,7 @@ const OperationListItem = ({ operation }: { operation: Operation }) => {
         type="button"
         onClick={(e) => deleteOperation(operation.idOperation, e)}
       >
-        <XCircleIcon className="w-10 h-10 md:w-12 md:h-12  text-red-700 hover:text-red-800 hover-scale-105" />
+        <XCircleIcon className="w-10 h-10 md:w-12 md:h-12  text-red-700 cursor-pointer hover:text-red-800 hover-scale-105" />
       </button>
     </div>
   );

@@ -20,6 +20,7 @@ import NotFound from "./layouts/NotFound";
 import useOperation from "./hooks/useOperation";
 import { useEffect } from "react";
 import OperationDetailLayout from "./layouts/OperationDetailLayout";
+import ProductListLayout from "./layouts/ProductListLayout";
 
 export type UserData = {
   user: string;
@@ -57,6 +58,7 @@ function App() {
           <Route path="contact" element={<WorkingLayout />} />
           {/* <Route path="contact" element={<ContactLayout />} /> */}
           <Route path="operation-detail/:idOperation" element={<OperationDetailLayout />} />
+          <Route path="operation-detail/list-product/:idProduct" element={<ProductListLayout />} />
           <Route path="*" element={<NotFound /> } />
           
         </Route>

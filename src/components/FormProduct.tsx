@@ -14,28 +14,34 @@ import useOperation from "../hooks/useOperation";
 type SelectitemProps = {
   name: string;
   optionList: OptionItem[];
-  handleSelect: (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => void   
+  handleSelect: (
+    e:
+      | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLInputElement>
+  ) => void;
   value: string;
   disabled?: boolean;
 };
-
-
 
 type LabelInputProps = {
   name: string;
   labelName: string;
   value: number | string;
-  type: string
-  handleInput:  (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => void   
+  type: string;
+  handleInput: (
+    e:
+      | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLInputElement>
+  ) => void;
   disabled?: boolean;
 };
 
 type SelectNameProps = {
   operationBuy: OperationBuy[];
-  handleData:Dispatch<SetStateAction<OperationForm>>;
+  handleData: Dispatch<SetStateAction<OperationForm>>;
   type: string;
   name: string;
-   setQuantityRest: Dispatch<SetStateAction<number>>
+  setQuantityRest: Dispatch<SetStateAction<number>>;
 };
 
 type OperationForm = Omit<Operation, "idOperation" | "date">;
@@ -55,7 +61,9 @@ const SelectItem = ({
       onChange={handleSelect}
       className={`${
         disabled ? "opacity-80 text-gray-500 " : ""
-      } text-lg font-semibold bg-gray-300 rounded-lg px-2 py-2 block ${value === 'buy' ? 'text-red-800' : value === 'sale' && ' text-green-800'}   `}
+      } text-lg font-semibold bg-gray-300 rounded-lg px-2 py-2 block ${
+        value === "buy" ? "text-red-800" : value === "sale" && " text-green-800"
+      }   `}
       disabled={disabled}
     >
       {optionList.map((item) => (
@@ -63,7 +71,11 @@ const SelectItem = ({
           disabled={item.disabled}
           key={item.id}
           value={item.value}
-          className={`${item.value === 'buy' ? 'text-red-700' : item.value === 'sale' && ' text-green-700'} disabled:bg-gray-400 disabled:text-gray-600 `}
+          className={`${
+            item.value === "buy"
+              ? "text-red-700"
+              : item.value === "sale" && " text-green-700"
+          } disabled:bg-gray-400 disabled:text-gray-600 `}
         >
           {item.name}{" "}
         </option>
@@ -72,9 +84,7 @@ const SelectItem = ({
   );
 };
 
-
-
-const LabelInput= ({
+const LabelInput = ({
   name,
   labelName,
   value,
@@ -95,7 +105,6 @@ const LabelInput= ({
         placeholder={labelName}
         value={value}
         onChange={handleInput}
-        
         className={`${
           disabled ? "opacity-80 " : ""
         } placeholder:lowercase  bg-gray-300 rounded-lg px-4 py-2 col-span-4 `}
@@ -106,7 +115,7 @@ const LabelInput= ({
 
 const NotProductAvilable = () => {
   return (
-    <label className="text-red-700 bg-red-200 border-2 rounded-lg border-red-700 text-lg font-semibold  px-2 flex items-center  ">
+    <label className="text-red-700 bg-red-200 border-2 rounded-lg border-red-700 text-lg font-semibold  px-2 py-1 flex items-center  ">
       No products avilable to sale .
     </label>
   );
@@ -117,50 +126,50 @@ const SelectName = ({
   handleData,
   type,
   name,
-  setQuantityRest
+  setQuantityRest,
 }: SelectNameProps) => {
-
-  const operationBuyAvilable = useMemo(()=> operationBuy.filter(oper => oper.quantityRest > 0) , [operationBuy] ) 
-  const filterType = useMemo(()=> operationBuyAvilable.filter(
-    (operation) => operation.type === type
-  ) ,[type, operationBuyAvilable] ) ;
+  const operationBuyAvilable = useMemo(
+    () => operationBuy.filter((oper) => oper.quantityRest > 0),
+    [operationBuy]
+  );
+  const filterType = useMemo(
+    () => operationBuyAvilable.filter((operation) => operation.type === type),
+    [type, operationBuyAvilable]
+  );
 
   const operationBuySelected = (name: string) => {
-    const buyFind = operationBuyAvilable.find((operation) => operation.name === name);
+    const buyFind = operationBuyAvilable.find(
+      (operation) => operation.name === name
+    );
     if (buyFind) {
-      setQuantityRest(buyFind.quantityRest)
-     
+      setQuantityRest(buyFind.quantityRest);
 
       /// Para cambiar si es sale y que solo se muestren los valores del sale seleccionado
       handleData((data) => {
-        return{
+        return {
           ...data,
-          name:buyFind.name,
+          name: buyFind.name,
           buy: buyFind.buy,
           measure: buyFind.measure,
           sale: buyFind.sale,
           type: buyFind.type,
-          idProduct: buyFind.idProduct
-
-        }
-      })
-      
+          idProduct: buyFind.idProduct,
+        };
+      });
     }
   };
 
-  const operationsToSale = useMemo(()=>
-    {
-      if(operationBuyAvilable.length === 0 ){
-        return []
-      } else if (type === 'DEFAULT'){
-        return operationBuyAvilable
-      } else if (filterType.length > 0 ){
-        return filterType
-      } else {
-        return []
-      }
-
-    } , [operationBuyAvilable, type , filterType ])
+  const operationsToSale = useMemo(() => {
+    if (operationBuyAvilable.length === 0) {
+      return [];
+    } else if (type === "DEFAULT") {
+      return operationBuyAvilable;
+    } else if (filterType.length > 0) {
+      return filterType;
+    } else {
+      return [];
+    }
+  }, [operationBuyAvilable, type, filterType]);
 
   return (
     <>
@@ -189,8 +198,7 @@ const SelectName = ({
             </option>
           ))}
         </select>
-      )
-    } 
+      )}
     </>
   );
 };
@@ -200,7 +208,7 @@ const FormProduct = () => {
     mesage,
     showMesage,
     dispatch,
-    state: { operationBuy },
+    state: { operationBuy, budget, budgetRest , benefit },
     userName,
   } = useOperation();
 
@@ -213,16 +221,16 @@ const FormProduct = () => {
     buy: 0,
     sale: 0,
     idProduct: "",
-    user: ''
-  }
+    user: "",
+  };
 
-  const [operationForm, setOperationForm] = useState<OperationForm>(initialForm);
-  const [quantityRest, setQuantityRest] = useState(0)
-
-
+  const [operationForm, setOperationForm] =
+    useState<OperationForm>(initialForm);
+  const [quantityRest, setQuantityRest] = useState(0);
+  const [newBudget, setNewBudget] = useState(0);
 
   const resetFormProd = () => {
-    setOperationForm(initialForm)
+    setOperationForm(initialForm);
   };
 
   const validationFormProduct = () => {
@@ -244,20 +252,26 @@ const FormProduct = () => {
       showMesage("Please insert a Operation Buy valid", "error");
     } else if (operationForm.sale <= 0) {
       showMesage("Please insert a Operation Sale valid", "error");
+    } else if (operationForm.mode === "buy" && budgetRest === 0) {
+      showMesage("No available budget to buy.", "error");
+    } else if (
+      operationForm.mode === "buy" &&
+      operationForm.buy * operationForm.quantity > budgetRest
+    ) {
+      showMesage("The purchase cost exceeds the available budget", "error");
     } else {
       showMesage("Operation add", "success");
 
       let operationPayload;
-     
 
       if (operationForm.mode === "buy") {
         operationPayload = {
-         ...operationForm,
+          ...operationForm,
           idOperation: uuidv4(),
           idProduct: uuidv4(),
           date: Date.now(),
           quantityRest: operationForm.quantity,
-          user: userName
+          user: userName,
         };
         resetFormProd();
         dispatch({
@@ -267,25 +281,26 @@ const FormProduct = () => {
           },
         });
       } else if (operationForm.mode === "sale") {
-        if(operationForm.quantity > quantityRest){
-        
-          showMesage(`Please insert a quantity sale valid the ${operationForm.name} only have ${quantityRest}${operationForm.measure}`, 'error')
+        if (operationForm.quantity > quantityRest) {
+          showMesage(
+            `Please insert a quantity sale valid the ${operationForm.name} only have ${quantityRest}${operationForm.measure}`,
+            "error"
+          );
           setOperationForm({
             ...operationForm,
-            quantity: 0
-          })
-          return
+            quantity: 0,
+          });
+          return;
         } else {
-
           operationPayload = {
             ...operationForm,
             idOperation: uuidv4(),
             idProduct: operationForm.idProduct,
             date: Date.now(),
-            user: userName
+            user: userName,
           };
           resetFormProd();
-  
+
           dispatch({
             type: "add-saleOperation",
             payload: {
@@ -294,7 +309,6 @@ const FormProduct = () => {
           });
         }
       }
-       
     }
   };
 
@@ -302,112 +316,159 @@ const FormProduct = () => {
     return operationForm.mode === "sale";
   };
 
- 
-
-  const handleLabelSelect = (e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement> )=> e.target.name === 'mode' || e.target.name === 'type' || e.target.name === 'name' || e.target.name === 'measure' ? (
-    setOperationForm({
-      ...operationForm,
-      [e.target.name] : e.target.value
-
-      })
-  ) : (
-       setOperationForm({
-      ...operationForm,
-      [e.target.name] : +e.target.value
-    })
-  )
-
-
+  const handleLabelSelect = (
+    e:
+      | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLInputElement>
+  ) =>
+    e.target.name === "mode" ||
+    e.target.name === "type" ||
+    e.target.name === "name" ||
+    e.target.name === "measure"
+      ? setOperationForm({
+          ...operationForm,
+          [e.target.name]: e.target.value,
+        })
+      : setOperationForm({
+          ...operationForm,
+          [e.target.name]: +e.target.value,
+        });
 
   return (
     <>
-      {userName !== "" && (
-        <div className=" p-2 md:px-6 ">
-          <div className="max-w-3xl min-h-50 mx-auto my-12 rounded-2xl  py-8 px-6 bg-gray-200 border-2  border-gray-300 shadow-2xl">
-            <h2 className="text-3xl text-center font-bold text-blue-600 text-shadow-xs  shadow-blue-600 py-8">
-              Operations:
-            </h2>
-            <form className="flex flex-col px-4 py-2">
-              <div className="grid grid-cols-1  md:grid-cols-2 md:grid-rows-4 gap-x-5  gap-y-6  ">
-                <SelectItem
-                  name="mode"
-                  optionList={modeProduct}
-                  handleSelect={handleLabelSelect}
-                  value={operationForm.mode}
+      <div className=" p-2 md:px-6 ">
+        <div className="max-w-3xl min-h-50 mx-auto my-12 rounded-2xl  py-8 px-6 bg-gray-200 border-2  border-gray-300 shadow-2xl">
+          {budget > 0 && (
+            <>
+              <div className="bg-gray-600 text-white text-lg font-medium p-4 text-center rounded-t-xl">
+                <p>Budget | {budget}</p>
+                <p className={`${budgetRest === 0 ? "text-red-800" : ""}`}>
+                  Rest Budget | {budgetRest}
+                </p>
+                <p>Benefit | {benefit}</p>
+              </div>
+              <h2 className="text-3xl text-center font-bold text-blue-600 text-shadow-xs  shadow-blue-600 py-8">
+                Operations:
+              </h2>
+            </>
+          )}
+          <form className="flex flex-col px-4 py-2">
+            {budget <= 0 ? (
+              <>
+                <label
+                  htmlFor="budget"
+                  className="text-3xl text-center font-bold text-blue-600 text-shadow-xs  shadow-blue-600 py-8"
+                >
+                  Budget :{" "}
+                </label>
+
+                <input
+                  className="w-lg border-2 border-blue-600 mx-auto p-1 px-4 rounded bg-white"
+                  type="number"
+                  name="budget"
+                  id="budget"
+                  placeholder="budget"
+                  value={newBudget}
+                  onChange={(e) => setNewBudget(+e.target.value)}
                 />
 
-                <SelectItem
-                  name="type"
-                  optionList={typeProduct}
-                  handleSelect={handleLabelSelect}
-                  value={operationForm.type}
+                <input
+                  type="submit"
+                  value={"Add"}
+                  className="w-md my-8 text-2xl font-bold text-white mx-auto px-2 py-1
+                 bg-blue-600 hover:scale-105 transition-all duration-500 ease-in-out disabled:opacity-75 hover:disabled:scale-100"
+                  disabled={newBudget <= 0}
+                  onClick={() =>
+                    dispatch({
+                      type: "add-budget",
+                      payload: { budget: newBudget },
+                    })
+                  }
                 />
+              </>
+            ) : (
+              <>
+                <div className="grid grid-cols-1  md:grid-cols-2 md:grid-rows-4 gap-x-5  gap-y-6  ">
+                  <SelectItem
+                    name="mode"
+                    optionList={modeProduct}
+                    handleSelect={handleLabelSelect}
+                    value={operationForm.mode}
+                  />
 
-                {operationForm.mode === "buy" || operationForm.mode === "DEFAULT" ? (
+                  <SelectItem
+                    name="type"
+                    optionList={typeProduct}
+                    handleSelect={handleLabelSelect}
+                    value={operationForm.type}
+                  />
+
+                  {operationForm.mode === "buy" ||
+                  operationForm.mode === "DEFAULT" ? (
+                    <LabelInput
+                      name="name"
+                      type="string"
+                      value={operationForm.name}
+                      labelName={"Product-name"}
+                      handleInput={handleLabelSelect}
+                    />
+                  ) : (
+                    <SelectName
+                      operationBuy={operationBuy}
+                      handleData={setOperationForm}
+                      type={operationForm.type}
+                      name={operationForm.name}
+                      setQuantityRest={setQuantityRest}
+                    />
+                  )}
+
                   <LabelInput
-                    name="name"
-                    type='string'
-                    value={operationForm.name}
-                    labelName={"Product-name"}
+                    name="quantity"
+                    labelName="Quantity"
+                    type="number"
+                    value={operationForm.quantity}
                     handleInput={handleLabelSelect}
                   />
-                ) : (
-                  
-                  <SelectName
-                    operationBuy={operationBuy}
-                    handleData={setOperationForm}
-                    type={operationForm.type}
-                    name={operationForm.name}
-                    setQuantityRest = {setQuantityRest}
+
+                  <SelectItem
+                    name="measure"
+                    optionList={measureProduct}
+                    handleSelect={handleLabelSelect}
+                    value={operationForm.measure}
+                    disabled={isSale()}
                   />
-                )}
 
-                <LabelInput
-                  name="quantity"
-                  labelName="Quantity"
-                  type="number"
-                  value={operationForm.quantity}
-                  handleInput={handleLabelSelect}
-                />
+                  <LabelInput
+                    name="buy"
+                    labelName="Buy-Price"
+                    type="number"
+                    value={operationForm.buy}
+                    handleInput={handleLabelSelect}
+                    disabled={isSale()}
+                  />
+                  <LabelInput
+                    name="sale"
+                    labelName="Sale-Price"
+                    type="number"
+                    value={operationForm.sale}
+                    handleInput={handleLabelSelect}
+                    disabled={isSale()}
+                  />
+                </div>
+                <Mesage text={mesage[0]} type={mesage[1]} />
+                <div className=" flex justify-evenly gap-x-5 pt-8 ">
+                  <ButtonGeneric
+                    title="Add operation"
+                    handleButon={validationFormProduct}
+                  />
 
-                <SelectItem
-                  name="measure"
-                  optionList={measureProduct}
-                  handleSelect={handleLabelSelect}
-                  value={operationForm.measure}
-                  disabled={isSale()}
-                />
-
-                <LabelInput
-                  name="buy"
-                  labelName="Buy-Price"
-                  type="number"
-                  value={operationForm.buy}
-                  handleInput={handleLabelSelect}
-                  disabled={isSale()}
-                />
-                <LabelInput
-                  name="sale"
-                  labelName="Sale-Price"
-                  type="number"
-                  value={operationForm.sale}
-                  handleInput={handleLabelSelect}
-                  disabled={isSale()}
-                />
-              </div>
-              <Mesage text={mesage[0]} type={mesage[1]} />
-              <div className=" flex justify-evenly gap-x-5 pt-8 ">
-                <ButtonGeneric
-                  title="Add operation"
-                  handleButon={validationFormProduct}
-                />
-                
-                <ButtonGeneric title="Reset" handleButon={resetFormProd} />
-              </div>
-            </form>
-          </div>
+                  <ButtonGeneric title="Reset" handleButon={resetFormProd} />
+                </div>
+              </>
+            )}
+          </form>
         </div>
-      )}
+      </div>
     </>
   );
 };

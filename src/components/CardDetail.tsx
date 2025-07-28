@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router";
 import type { OperationDetail } from "../types";
 import IconType from "./IconType";
 import { UserIcon } from "@heroicons/react/24/solid";
 
 const CardDetail = ({ operation }: { operation: OperationDetail }) => {
+  const navigate = useNavigate()
   return (
     <>
       <div className="flex flex-col gap-8 md:gap-24">
@@ -44,7 +46,8 @@ const CardDetail = ({ operation }: { operation: OperationDetail }) => {
           <p className="font-bold text-black text-sm  ">
             {" "}
             ProductId :{""}
-            <span className=" text-xs text-blue-900 hover:underline hover:cursor-default  ">
+            <span className=" text-xs text-blue-900 hover:underline cursor-pointer "
+            onClick={()=> navigate(`/operation-detail/list-product/${operation.idProduct}`)}>
               {" "}
               {operation.idProduct}{" "}
             </span>

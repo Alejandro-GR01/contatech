@@ -10,7 +10,7 @@ const ButtonNavBefore = () => {
     <button type="button"
       onClick={()=> navigate(-1)}
     >
-      <div className="relative ">
+      <div className="relative  cursor-pointer">
         <ArrowLeftCircleIcon className="text-blue-900 relative rounded-full z-20  w-12 h-12 md:w-14 md:h-14 " />    
         <div className="absolute top-1.5 left-1.5 md:top-2 md:left-2 w-8 h-8 md:w-10 md:h-10 bg-white rounded-full z-10"></div>    
       </div>

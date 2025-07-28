@@ -8,7 +8,7 @@ const ListOperationLayout = () => {
   return (
     <>
       <div className="h-screen">
-        <ListOperations mode={mode}>
+        <ListOperations filter={mode}>
           <NavOperationList />
         </ListOperations>
       </div>
