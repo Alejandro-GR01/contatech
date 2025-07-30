@@ -5,8 +5,7 @@ export type State = {
   operationSale: Operation[];
   operationAll: Operation[];
   budget: number;
-  budgetRest: number;
-  benefit: number;
+
 };
 
 export type Actions =
@@ -27,8 +26,7 @@ const initialOperDefault = {
   operationSale: [],
   operationAll: [],
   budget: 0,
-  budgetRest: 0,
-  benefit: 0,
+
 };
 
 export const initialState: State = initialStorage();
@@ -39,11 +37,11 @@ export const operationReducer = (
 ) => {
   if (actions.type === "add-budget") {
     const budgetAdd = state.budget + actions.payload.budget;
-    const budgetRestAdd = state.budgetRest + actions.payload.budget;
+   
     return {
       ...state,
       budget: budgetAdd,
-      budgetRest: budgetRestAdd,
+     
     };
   }
 
@@ -74,12 +72,12 @@ export const operationReducer = (
       date,
       user,
     };
-    const budgetRestNew = state.budgetRest - buy * quantity;
+
     return {
       ...state,
       operationBuy: [...state.operationBuy, actions.payload.operation],
       operationAll: [...state.operationAll, operationToAll],
-      budgetRest: budgetRestNew,
+
     };
   }
   // ////////////////////////////////////////////////////////////
@@ -92,9 +90,7 @@ export const operationReducer = (
     const findBuyProdIndex = state.operationBuy.findIndex(
       (operation) => operation.idProduct === actions.payload.operation.idProduct
     );
-    const newBenefit =
-      state.benefit +
-      actions.payload.operation.quantity * actions.payload.operation.sale;
+
     const newBuyArray = BuyProdCopy.map((prod, i) => {
       if (i === findBuyProdIndex) {
         const newRest = prod.quantityRest - actions.payload.operation.quantity;
@@ -113,7 +109,7 @@ export const operationReducer = (
       operationBuy: newBuyArray,
       operationSale: [...state.operationSale, actions.payload.operation],
       operationAll: [...state.operationAll, actions.payload.operation],
-      benefit: newBenefit,
+
     };
   }
   if (actions.type === "delete-operation") {
@@ -125,13 +121,10 @@ export const operationReducer = (
       let saleRes: Operation[] = [];
       let allRes: Operation[] = [];
       let idProductToDelete: OperationBuy["idProduct"];
-      let newBudgetRest = state.budgetRest;
-      let newBenefit = state.benefit;
-      let benefitMinus= 0 
+  
 
       if (operationToDelete.mode === "buy") {
-        newBudgetRest =
-          state.budgetRest + operationToDelete.buy * operationToDelete.quantity;
+      
         const indexBuyToDelete = state.operationBuy.findIndex(
           (oper) => oper.idOperation === actions.payload.id
         );
@@ -141,11 +134,8 @@ export const operationReducer = (
           (operation) => operation.idOperation !== actions.payload.id
         );
 
-        state.operationSale
-          .filter((oper) => oper.idProduct === idProductToDelete)
-          .map((oper) => (benefitMinus += oper.quantity * oper.sale));
 
-          newBenefit = state.benefit - benefitMinus
+
 
         saleRes = state.operationSale.filter(
           (oper) => oper.idProduct !== idProductToDelete
@@ -154,8 +144,7 @@ export const operationReducer = (
           (oper) => oper.idProduct !== idProductToDelete
         );
       } else if (operationToDelete.mode === "sale") {
-        newBenefit =
-          state.benefit - operationToDelete.sale * operationToDelete.quantity;
+
         const indexSaleDelete = state.operationSale.findIndex(
           (oper) => oper.idOperation === actions.payload.id
         );
@@ -185,8 +174,7 @@ export const operationReducer = (
         operationBuy: buyRes,
         operationSale: saleRes,
         operationAll: allRes,
-        budgetRest: newBudgetRest,
-        benefit: newBenefit,
+      
       };
     }
   }

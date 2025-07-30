@@ -1,5 +1,6 @@
 import {
   createContext,
+  useMemo,
   useReducer,
   useState,
   type Dispatch,
@@ -21,6 +22,8 @@ type OperationContextProps = {
   setUserName: Dispatch<SetStateAction<string>>;
   mesage: [string, "error" | "success"];
   showMesage: (text: MesageProps["text"], type: MesageProps["type"]) => void;
+  budgetRest: number;
+  benefit: number;
 };
 
 export const OperationContext = createContext<OperationContextProps>(null!);
@@ -44,6 +47,11 @@ export const OperationProvider = ({ children }: OperationProviderProps) => {
     }, 3000);
   };
 
+  const budgetRest = useMemo(()=> state.budget - state.operationBuy.reduce((budgetMinus, buyOper)=> {
+     return buyOper.buy * buyOper.quantity + budgetMinus}, 0), [state.budget, state.operationBuy])
+
+     const benefit = useMemo(()=> state.operationSale.reduce((totalbenefit, saleOper)=> saleOper.sale * saleOper.quantity + totalbenefit, 0) ,[state.operationSale])
+
   return (
     <OperationContext.Provider
       value={{
@@ -53,6 +61,10 @@ export const OperationProvider = ({ children }: OperationProviderProps) => {
         setUserName,
         mesage,
         showMesage,
+        budgetRest,
+        benefit
+
+
       }}
     >
       {children}

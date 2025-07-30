@@ -1,4 +1,4 @@
-import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import {
   measureProduct,
   modeProduct,
@@ -10,6 +10,8 @@ import Mesage from "./Mesage";
 import { v4 as uuidv4 } from "uuid";
 import type { Operation, OperationBuy } from "../types";
 import useOperation from "../hooks/useOperation";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router";
 
 type SelectitemProps = {
   name: string;
@@ -208,7 +210,9 @@ const FormProduct = () => {
     mesage,
     showMesage,
     dispatch,
-    state: { operationBuy, budget, budgetRest , benefit },
+    budgetRest,
+    benefit,
+    state: { operationBuy, budget },
     userName,
   } = useOperation();
 
@@ -227,7 +231,10 @@ const FormProduct = () => {
   const [operationForm, setOperationForm] =
     useState<OperationForm>(initialForm);
   const [quantityRest, setQuantityRest] = useState(0);
-  const [newBudget, setNewBudget] = useState(0);
+
+  const navigate = useNavigate()
+
+  useEffect ( ()=> {if(budget <= 0 ) {navigate('/use/budget')}} ,[budget])
 
   const resetFormProd = () => {
     setOperationForm(initialForm);
@@ -340,8 +347,13 @@ const FormProduct = () => {
         <div className="max-w-3xl min-h-50 mx-auto my-12 rounded-2xl  py-8 px-6 bg-gray-200 border-2  border-gray-300 shadow-2xl">
           {budget > 0 && (
             <>
-              <div className="bg-gray-600 text-white text-lg font-medium p-4 text-center rounded-t-xl">
-                <p>Budget | {budget}</p>
+              <div className="bg-gray-500 text-white text-lg font-medium p-4 text-center rounded-t-xl">
+                <div className="flex items-center justify-center">
+              
+                  <div onClick={()=> navigate('budget')}>
+                    <PlusCircleIcon className="text-white h-6 w-6 hover:scale-110 transition-transform duration-200 ease-in inline ml-3 "  />
+                  </div>
+                </div>
                 <p className={`${budgetRest === 0 ? "text-red-800" : ""}`}>
                   Rest Budget | {budgetRest}
                 </p>
@@ -352,42 +364,9 @@ const FormProduct = () => {
               </h2>
             </>
           )}
-          <form className="flex flex-col px-4 py-2">
-            {budget <= 0 ? (
-              <>
-                <label
-                  htmlFor="budget"
-                  className="text-3xl text-center font-bold text-blue-600 text-shadow-xs  shadow-blue-600 py-8"
-                >
-                  Budget :{" "}
-                </label>
-
-                <input
-                  className="w-lg border-2 border-blue-600 mx-auto p-1 px-4 rounded bg-white"
-                  type="number"
-                  name="budget"
-                  id="budget"
-                  placeholder="budget"
-                  value={newBudget}
-                  onChange={(e) => setNewBudget(+e.target.value)}
-                />
-
-                <input
-                  type="submit"
-                  value={"Add"}
-                  className="w-md my-8 text-2xl font-bold text-white mx-auto px-2 py-1
-                 bg-blue-600 hover:scale-105 transition-all duration-500 ease-in-out disabled:opacity-75 hover:disabled:scale-100"
-                  disabled={newBudget <= 0}
-                  onClick={() =>
-                    dispatch({
-                      type: "add-budget",
-                      payload: { budget: newBudget },
-                    })
-                  }
-                />
-              </>
-            ) : (
-              <>
+       
+            
+              <form className="flex flex-col px-4 py-2">
                 <div className="grid grid-cols-1  md:grid-cols-2 md:grid-rows-4 gap-x-5  gap-y-6  ">
                   <SelectItem
                     name="mode"
@@ -464,9 +443,9 @@ const FormProduct = () => {
 
                   <ButtonGeneric title="Reset" handleButon={resetFormProd} />
                 </div>
-              </>
-            )}
-          </form>
+              </form>
+            
+
         </div>
       </div>
     </>

@@ -21,6 +21,7 @@ import useOperation from "./hooks/useOperation";
 import { useEffect } from "react";
 import OperationDetailLayout from "./layouts/OperationDetailLayout";
 import ProductListLayout from "./layouts/ProductListLayout";
+import BudgetAdd from "./components/BudgetAdd";
 
 export type UserData = {
   user: string;
@@ -47,6 +48,7 @@ function App() {
           {/* <Route path="how" element={<HowLayout />} /> */}
           <Route path="use">
             <Route index element={<UseItLayout />} />
+            <Route path="budget" element={<BudgetAdd />} />
             <Route path="operation-list" >
               <Route index element={<ListOperationLayout />}/>
               <Route
